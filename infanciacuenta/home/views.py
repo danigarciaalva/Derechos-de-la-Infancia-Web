@@ -9,6 +9,11 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.shortcuts import get_object_or_404
+import urllib
 
 def home(request):
-	return render_to_response('home/home.html',context_instance=RequestContext(request))
+	url = 'http://datos.codeandomexico.org/api/action/datastore_search?q=Estado:Puebla&resource_id=2804dd9b-9d30-4fcd-aee9-70a309013197'
+	fileobj = urllib.urlopen(url)
+	j = json.loads(fileobj.read())
+	del j["help"]
+	return HttpResponse(unicode(json.dumps(j),'unicode-escape'),content_type='text/plain; charset=utf-8')
