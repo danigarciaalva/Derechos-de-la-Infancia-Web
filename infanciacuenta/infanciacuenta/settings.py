@@ -18,8 +18,7 @@ PROJECT_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), '../')
 
 ADMINS = (
     ('Daniel Garcia Alvarado', 'danigarciaalva@hotmail.com'),
-    ('Diego Matus Perdomo', 'badboy_immm@hotmail.com'),
-    ('Yolanda Martínez Martínez','yolanda.mtz.mtz@gmail.com')
+    ('Diego Matus Perdomo', 'badboy_immm@hotmail.com')
 )
 
 MANAGERS = ADMINS
@@ -42,8 +41,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'sekizai',
-    'south',
-    'bootstrapform',
     'home'
 )
 
@@ -102,12 +99,8 @@ WSGI_APPLICATION = 'infanciacuenta.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'infanciacuenta',
-        'USER': 'infanciacuenta',
-        'PASSWORD': 'ic',
-        'HOST': '',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'asdfgj'
     }
 }
 
@@ -136,13 +129,18 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
 
 # Additional locations of static files
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_PATH, 'assets'),
-)
+
+STATIC_URL = '/static/'
+
+# Additional locations of static files
+#STATICFILES_DIRS = (
+#    os.path.join(PROJECT_PATH, 'assets'),
+#)
+MEDIA_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), '../../media/').replace('\\','/'))
+STATIC_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), '../../static/').replace('\\','/'))

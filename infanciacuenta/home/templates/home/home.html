@@ -1,1 +1,17 @@
-holi :3
+{% load staticfiles sekizai_tags %}
+<script src="http://www.chartjs.org/assets/Chart.js"></script>
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Estadisticas</title>
+</head>
+<body>
+<div class="container">
+  {% for dato in dat %}
+  {{ dato.indicador }}-{{ dato.peso }}
+    <br>
+  {% endfor %}
+</div>
+</body>
+</html>
