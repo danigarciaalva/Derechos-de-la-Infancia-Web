@@ -8,10 +8,23 @@
 </head>
 <body>
 <div class="container">
-  {% for dato in dat %}
-  {{ dato.indicador }}-{{ dato.peso }}
-    <br>
-  {% endfor %}
+  <canvas id="myChart" width="800px" height="600px"></canvas>
 </div>
 </body>
+<script type="text/javascript">
+	var ctx = document.getElementById("myChart").getContext("2d");
+	var data = {
+		labels : [""],
+		datasets : [
+			{% for d in data %}
+			{
+				fillColor : "rgba(220,220,220,0.5)",
+				strokeColor : "rgba(220,220,220,1)",
+				data : [parseFloat("{{d}}")]
+			},
+			{% endfor %}
+		]
+	};
+	var myNewChart = new Chart(ctx).Bar(data);
+</script>
 </html>

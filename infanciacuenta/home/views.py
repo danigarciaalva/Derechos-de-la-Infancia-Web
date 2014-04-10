@@ -13,26 +13,6 @@ import urllib
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 
-class Indicador(object):
-    def __init__(self, indicador,rgb):
-        self.indicador = indicador
-        self.rgb = rgb
-
-class Datos(object):
-	def __init__(self,current,years,indiadores):
-		self.current = current 
-		self.years = years
-		self.indicadores =indicadores
-
-class Dato(object):
-	def __init__(self,indicador,peso):
-		self.indicador = indicador
-		self.peso = peso
-
-class Encoder(json.JSONEncoder):
-    def default(self, obj):
-        return obj.__dict__
-
 def home(request):
 #	url = 'http://datamx.io/api/action/datastore_search?resource_id=2804dd9b-9d30-4fcd-aee9-70a309013197&limit=5'
 	url = 'http://datamx.io/api/action/datastore_search?resource_id=2804dd9b-9d30-4fcd-aee9-70a309013197&Estado:Puebla'
@@ -61,14 +41,33 @@ def indicadores(request):
 	del j["help"]
 	return HttpResponse(unicode(json.dumps(j),'unicode-escape'),content_type='text/plain; charset=utf-8')
 
+@require_POST
+@csrf_exempt
 def indicadores_2(request):
-	#q = request.POST['dominio']
-	#estado = request.POST['dominio']
-	estado  ="Puebla"
-	q='2804dd9b-9d30-4fcd-aee9-70a309013197'
-	url = 'http://datamx.io/api/action/datastore_search?resource_id='+q+'&limit=1&Estado:'+estado
+	t = request.POST['tipo']
+	estado = request.POST['estado']
+	dominio = request.POST['dominio']
+	indicador = request.POST['indicador']
+	url = 'http://datamx.io/api/action/datastore_search?resource_id='+dominio+'&limit=1&Estado:'+estado
 	fileobj = urllib.urlopen(url)
 	result = json.loads(fileobj.read())
+	j = result
+	fields = j["result"]["fields"]
+	del j["help"]
+	del j["result"]["fields"]
+	j = j["result"]["records"][0]
+	#j = unicode(json.dumps(j),'unicode-escape'),
+	l = ["Estado","año","_id"]
+	data_temp = [v for k,v in j.items() if k not in l]
+	fields_temp = [k for k,v in j.items() if k not in l]
+	if t == "json":
+		return HttpResponse(unicode(json.dumps(j),'unicode-escape'),content_type='text/plain; charset=utf-8')
+	elif t == "html":
+		data = {
+			'data' : data_temp,
+			'fields' : fields_temp
+		}
+		return render_to_response('home/home.html',data)
 
-	j=result
-	return HttpResponse(unicode(json.dumps(j),'unicode-escape'),content_type='text/plain; charset=utf-8')
+def test(request):
+	return render_to_response('home/home.html')

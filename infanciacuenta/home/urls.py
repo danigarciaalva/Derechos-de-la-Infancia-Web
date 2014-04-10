@@ -4,5 +4,6 @@ from django.conf.urls import patterns,url, include
 urlpatterns = patterns('home.views',
 	url(r'^$','home'),
 	url(r'indicadores/$','indicadores'),
-	url(r'indicadores_2/$','indicadores')
+	url(r'indicadores_2/$','indicadores_2'),
+	url(r'test/$','test')
 )
